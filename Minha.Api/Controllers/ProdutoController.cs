@@ -20,10 +20,21 @@ namespace Minha.Api.Controllers
             _logger = logger;
         }
 
-        [HttpPost]
+        [HttpPost("Save")]
         public IActionResult Save([FromBody] Produto produto)
         {
-            ProdutoRepository.Produtos.Add(produto);
+            var existingProduct = ProdutoRepository.Produtos.SingleOrDefault(x => x.Id == produto.Id);
+
+            if (existingProduct == null)
+            {
+                ProdutoRepository.Produtos.Add(produto);
+            }
+            else
+            {
+                ProdutoRepository.Produtos.Remove(existingProduct);
+                ProdutoRepository.Produtos.Add(produto);
+            }
+            //ProdutoRepository.Produtos.Add(produto);
             return Ok();        
         }
 
@@ -36,12 +47,12 @@ namespace Minha.Api.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Produto> GetAll()
+        public IEnumerable<Produto> Get()
         {
             return ProdutoRepository.Produtos;
         }
 
-        [HttpDelete]
+        [HttpDelete("Delete/{id}")]
         public IActionResult Delete(int id)
         {
             var produto = ProdutoRepository.Produtos.FirstOrDefault(x => x.Id == id);

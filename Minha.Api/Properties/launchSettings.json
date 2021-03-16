@@ -20,9 +20,9 @@
     "Minha.Api": {
       "commandName": "Project",
       "dotnetRunMessages": "true",
-      "launchBrowser": false,
+      "launchBrowser": true,
       "launchUrl": "produto",
-      "applicationUrl": "http://localhost:5000",
+      "applicationUrl": "http://192.168.0.8:5000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
