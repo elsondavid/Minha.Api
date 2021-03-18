@@ -22,13 +22,28 @@ namespace Minha.Api.Controllers
 
         [HttpPost("Save")]
         public IActionResult Save([FromBody] Produto produto)
+        
         {
             var existingProduct = ProdutoRepository.Produtos.SingleOrDefault(x => x.Id == produto.Id);
 
             if (existingProduct == null)
             {
+                var maiorId = 0;
+                var count = ProdutoRepository.Produtos.Count;
+
+                for (var i = 0; i < count; i++)
+                {
+                    var objProduto = ProdutoRepository.Produtos[i];
+                    if (objProduto.Id > maiorId)
+                    {
+                        maiorId = objProduto.Id;
+                    }
+                }
+
+                maiorId++;
+                produto.Id = maiorId;
                 ProdutoRepository.Produtos.Add(produto);
-            }
+}
             else
             {
                 ProdutoRepository.Produtos.Remove(existingProduct);
@@ -37,7 +52,6 @@ namespace Minha.Api.Controllers
             //ProdutoRepository.Produtos.Add(produto);
             return Ok();        
         }
-
 
         [HttpPost]
         public IActionResult Teste()
